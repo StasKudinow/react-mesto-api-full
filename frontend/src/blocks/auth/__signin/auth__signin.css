@@ -1,0 +1,9 @@
+.auth__signin p {
+  width: 358;
+  margin: 15px 0 0;
+  display: inline;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #ffffff;
+}

@@ -1,0 +1,5 @@
+.popup_opened {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}

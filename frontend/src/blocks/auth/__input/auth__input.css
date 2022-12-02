@@ -1,0 +1,17 @@
+.auth__input {
+  padding: 0 0 9px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  border: none;
+  border-bottom: 2px solid #cccccc;
+  color: #cccccc;
+  background-color: #000000;
+  outline: none;
+}
+
+@media screen and (max-width: 879px) {
+  .auth__input {
+    padding: 0 0 7px;
+  }
+}
