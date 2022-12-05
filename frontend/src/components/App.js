@@ -5,7 +5,7 @@ import error from '../images/error.png';
 import { useState, useEffect } from 'react';
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
-import api from "../utils/api";
+import * as api from "../utils/api";
 import * as auth from '../utils/auth';
 
 import Header from './Header';
@@ -161,6 +161,7 @@ function App() {
 
   function onLogout() {
     localStorage.removeItem('jwt');
+    setLoggedIn(false);
   };
 
   function checkToken(jwt) {
@@ -168,7 +169,7 @@ function App() {
       .then((res) => {
         if(res) {
           setLoggedIn(true);
-          setEmail(res.data.email);
+          setEmail(res.email);
         }
       })
       .catch((err) => {
@@ -188,7 +189,7 @@ function App() {
       Promise.all([api.getUserInfo(), api.getInitialCards()])
       .then(([userData, cardsData]) => {
         setCurrentUser(userData);
-        setCards(cardsData);
+        setCards(cardsData.reverse());
         history.push('/');
       })
       .catch((err) => {

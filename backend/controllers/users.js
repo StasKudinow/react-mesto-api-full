@@ -9,18 +9,20 @@ const {
   SALT_ROUND,
 } = require('../utils/constants');
 
+const { NODE_ENV, JWT_SECRET } = require('../utils/constants');
+
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({})
-    .then((data) => res.send({ data }))
+    .then((data) => res.send(data))
     .catch(next);
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
-    .then((data) => res.send({ data }))
+    .then((data) => res.send(data))
     .catch(next);
 };
 
@@ -30,7 +32,7 @@ module.exports.getUserById = (req, res, next) => {
       if (!data) {
         throw new NotFoundError('Запрашиваемый пользователь не найден');
       }
-      return res.send({ data });
+      return res.send(data);
     })
     .catch(next);
 };
@@ -72,7 +74,7 @@ module.exports.updateUser = (req, res, next) => {
       runValidators: true,
     },
   )
-    .then((data) => res.send({ data }))
+    .then((data) => res.send(data))
     .catch((err) => {
       if (err.statusCode === ERROR_VALIDATION) {
         return next(new ValidationError('Переданы некорректные данные'));
@@ -91,7 +93,7 @@ module.exports.updateAvatar = (req, res, next) => {
       runValidators: true,
     },
   )
-    .then((data) => res.send({ data }))
+    .then((data) => res.send(data))
     .catch((err) => {
       if (err.statusCode === ERROR_VALIDATION) {
         return next(new ValidationError('Переданы некорректные данные'));
@@ -106,7 +108,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        'some-secret-key',
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '7d' },
       );
       res.send({ token });

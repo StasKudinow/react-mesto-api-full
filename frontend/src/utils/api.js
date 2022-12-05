@@ -1,101 +1,110 @@
-class Api {
-  constructor({ baseUrl, headers }) {
-    this._baseUrl = baseUrl;
-    this._headers = headers;
-  }
+export const BASE_URL = 'https://api.staskudinow.mesto.nomoredomains.club';
 
-  _checkResponse(res) {
-    if(res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(res.status);
+const checkResponse = (res) => {
+  if(res.ok) {
+    return res.json();
+  } else {
+    return Promise.reject(res.status);
+  }
+};
+
+export const getUserInfo = () => {
+  return fetch(`${BASE_URL}/users/me`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json'
     }
-  }
+  })
+  .then(checkResponse)
+};
 
-  getUserInfo() {
-    return fetch(`${this._baseUrl}users/me`, {
-      headers: this._headers
+export const getInitialCards = () => {
+  return fetch(`${BASE_URL}/cards`, {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(checkResponse)
+};
+
+export const setUserInfo = (data) => {
+  return fetch(`${BASE_URL}/users/me`, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: data.name,
+      about: data.about
     })
-    .then(this._checkResponse)
-  }
+  })
+  .then(checkResponse)
+};
 
-  getInitialCards() {
-    return fetch(`${this._baseUrl}cards`, {
-      headers: this._headers
+export const addCard = (data) => {
+  return fetch(`${BASE_URL}/cards`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: data.name,
+      link: data.link
     })
-    .then(this._checkResponse)
-  }
+  })
+  .then(checkResponse)
+};
 
-  setUserInfo(data) {
-    return fetch(`${this._baseUrl}users/me`, {
-      method: 'PATCH',
-      headers: this._headers,
-      body: JSON.stringify({
-        name: data.name,
-        about: data.about
-      })
+export const deleteCard = (id) => {
+  return fetch(`${BASE_URL}/cards/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(checkResponse)
+};
+
+export const putLike = (id) => {
+  return fetch(`${BASE_URL}/cards/${id}/likes`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(checkResponse)
+};
+
+export const deleteLike = (id) => {
+  return fetch(`${BASE_URL}/cards/${id}/likes`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(checkResponse)
+};
+
+export const setAvatar = (data) => {
+  return fetch(`${BASE_URL}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      avatar: data.avatar
     })
-    .then(this._checkResponse)
-  }
+  })
+  .then(checkResponse)
+};
 
-  addCard(data) {
-    return fetch(`${this._baseUrl}cards`, {
-      method: 'POST',
-      headers: this._headers,
-      body: JSON.stringify({
-        name: data.name,
-        link: data.link
-      })
-    })
-    .then(this._checkResponse)
-  }
-
-  deleteCard(id) {
-    return fetch(`${this._baseUrl}cards/${id}`, {
-      method: 'DELETE',
-      headers: this._headers
-    })
-    .then(this._checkResponse)
-  }
-
-  putLike(id) {
-    return fetch(`${this._baseUrl}cards/${id}/likes`, {
-      method: 'PUT',
-      headers: this._headers
-    })
-    .then(this._checkResponse)
-  }
-
-  deleteLike(id) {
-    return fetch(`${this._baseUrl}cards/${id}/likes`, {
-      method: 'DELETE',
-      headers: this._headers
-    })
-    .then(this._checkResponse)
-  }
-
-  setAvatar(data) {
-    return fetch(`${this._baseUrl}users/me/avatar`, {
-      method: 'PATCH',
-      headers: this._headers,
-      body: JSON.stringify({
-        avatar: data.avatar
-      })
-    })
-    .then(this._checkResponse)
-  }
-
-  changeLikeCardStatus(id, isLiked) {
-    return isLiked ? this.deleteLike(id) : this.putLike(id);
-  }
-}
-
-const api = new Api({
-  baseUrl: 'https://nomoreparties.co/v1/cohort-49/',
-  headers: {
-    authorization: '776fa51b-f2c4-44dc-b3e7-060fea23d99a',
-    'Content-Type': 'application/json'
-  },
-});
-
-export default api;
+export const changeLikeCardStatus = (id, isLiked) => {
+    return isLiked ? deleteLike(id) : putLike(id);
+};

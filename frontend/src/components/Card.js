@@ -11,7 +11,7 @@ function Card(props) {
     props.onCardDelete(props.card);
   };
 
-  const isOwn = props.card.owner._id === props.id;
+  const isOwn = props.card.owner === props.id;
   const cardDeleteButtonClassName = (
     `elements__trash ${isOwn ? '' : 'elements__trash_hidden'}`
   );
