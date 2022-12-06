@@ -16,6 +16,7 @@ const app = express();
 const options = {
   origin: [
     'http://localhost:3010',
+    'http://staskudinow.mesto.nomoredomains.club',
     'https://staskudinow.mesto.nomoredomains.club',
     'https://staskudinow.github.io',
   ],
