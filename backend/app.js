@@ -38,13 +38,6 @@ mongoose.connect(DB_ADDRESS, {
 
 app.use(requestLogger);
 
-// Краш-тест (удалить после ревью)
-app.get('/crash-test', () => {
-  setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
-  }, 0);
-});
-
 app.use(router);
 
 app.use(errorLogger);
