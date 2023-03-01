@@ -1,4 +1,4 @@
-# Mesto - React SPA
+# Mesto - Single-page Application
 <p align="center">
   <img src="https://img.shields.io/badge/node.js-v16.16.0-green">
   <img src="https://img.shields.io/badge/react-v18.2.0-blue">
